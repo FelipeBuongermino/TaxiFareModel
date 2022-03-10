@@ -36,16 +36,17 @@ class Trainer():
             ('distance', dist_pipe, ["pickup_latitude", "pickup_longitude", 'dropoff_latitude', 'dropoff_longitude']),
             ('time', time_pipe, ['pickup_datetime'])
         ], remainder="drop")
-        pipe = Pipeline([
+        self.pipeline = Pipeline([
             ('preproc', preproc_pipe),
             ('linear_model', LinearRegression())
         ])
 
-        self.pipeline = pipe
 
     def run(self):
         """set and train the pipeline"""
+        self.set_pipeline()
         self.pipeline.fit(self.X,self.y)
+
 
     def evaluate(self, X_test, y_test):
         """evaluates the pipeline on df_test and return the RMSE"""
@@ -76,9 +77,8 @@ if __name__ == "__main__":
     print('criando trainer')
     trainer = Trainer(X_train,y_train)
     print('estruturando pipeline')
-    trainer.set_pipeline()
 
-    # train the pipeline
+#    # train the pipeline
     print('treinando pipeline')
     trainer.run()
 
